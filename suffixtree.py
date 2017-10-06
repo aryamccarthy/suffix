@@ -3,7 +3,8 @@ Adapted from Ben Langmead's lecture slides.
 
 Constructed using Ukkonen's algorithm.
 
-Ukkonen, Esko. "On-line construction of suffix trees." Algorithmica 14.3 (1995): 249-260.
+Ukkonen, Esko. "On-line construction of suffix trees."
+Algorithmica 14.3 (1995): 249-260.
 
 O(m) time and space complexity.
 
@@ -13,15 +14,22 @@ O(m) time and space complexity.
 class SuffixTree(object):
 
     class Node(object):
-        def __init__(self, lab):
+        def __init__(self, lab=None):
             self.lab = lab  # label on path leading to this node
             self.out = {}  # outgoing edges; maps characters to nodes
+
+        def __str__(self):
+            result = self.lab or ""
+            for child in self.out:
+                print(".")
+                result += str(child)
+            return result
 
     def __init__(self, s):
         """ Make suffix tree, without suffix links, from s in quadratic time
             and linear space """
         s += '$'
-        self.root = self.Node(None)
+        self.root = self.Node()
         self.root.out[s[0]] = self.Node(s)  # trie for just longest suf
         # add the rest of the suffixes, from longest to shortest
         for i in range(1, len(s)):
@@ -97,3 +105,6 @@ class SuffixTree(object):
         else:
             # finished at offset 'off' within an edge leading to 'node'
             return node.lab[off] == '$'
+
+    def __str__(self):
+        return str(self.root)
